@@ -1,0 +1,70 @@
+﻿@model IEnumerable<LibraryManager.Models.BookModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Spis książek</h1>
+<p>
+    <a asp-action="Create">Dodaj książkę</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfPages)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YearOfPublishment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvaliable)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearOfPublishment)
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.IsAvaliable)
+            </th>
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.BookId })
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.BookId })
+                @Html.ActionLink("Dostępność", "Avaliable", new { id = item.BookId })
+                @Html.ActionLink("Usuń", "Delete", new { id = item.BookId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
