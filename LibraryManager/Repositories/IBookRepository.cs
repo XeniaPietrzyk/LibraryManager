@@ -9,6 +9,7 @@ namespace LibraryManager.Repositories
     public interface IBookRepository
     {
         BookModel Get(int bookId);
+        IQueryable<BookModel> GetAll();
         IQueryable<BookModel> GetAllActive();
         void Add(BookModel book);
         void Update(int bookId, BookModel book);

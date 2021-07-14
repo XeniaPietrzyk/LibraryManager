@@ -15,13 +15,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfPages)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Isbn)
-            </th>
+            </th>            
             <th>
                 @Html.DisplayNameFor(model => model.Publisher)
             </th>
@@ -42,13 +36,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfPages)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Isbn)
-            </td>
+            </td>          
             <td>
                 @Html.DisplayFor(modelItem => item.Publisher)
             </td>
@@ -61,7 +49,7 @@
             <td>
                 @Html.ActionLink("Edytuj", "Edit", new { id = item.BookId })
                 @Html.ActionLink("Szczegóły", "Details", new { id = item.BookId })
-                @Html.ActionLink("Dostępność", "Avaliable", new { id = item.BookId })
+                @*@Html.ActionLink("Dostępność", "Avaliable", new { id = item.BookId })*@
                 @Html.ActionLink("Usuń", "Delete", new { id = item.BookId })
             </td>
         </tr>

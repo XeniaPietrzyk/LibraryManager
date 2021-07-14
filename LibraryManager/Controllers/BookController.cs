@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryManager.Models;
+using LibraryManager.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,21 +11,23 @@ namespace LibraryManager.Controllers
 {
     public class BookController : Controller
     {
-        private static IList<BookModel> books = new List<BookModel>()        
+        private readonly IBookRepository _bookRepository;
+        public BookController(IBookRepository bookRepository)
         {
-            new BookModel(){BookId=1, Title="Zaczarowany ogród", Author = "Rosa Rozalska", NumberOfPages=60, Isbn="122345678198", Publisher="Dobra Książka", YearOfPublishment=2020, IsAvaliable=true}
-        };
+            _bookRepository = bookRepository;
+
+        }
 
         // GET: Book
         public ActionResult Index()
         {
-            return View(books.Where(x => x.IsAvaliable == true));
+            return View(_bookRepository.GetAllActive());
         }
 
         // GET: Book/Details/5
         public ActionResult Details(int id)
         {
-            return View(books.FirstOrDefault(x=> x.BookId == id));
+            return View(_bookRepository.Get(id));
         }
 
         // GET: Book/Create
@@ -38,16 +41,19 @@ namespace LibraryManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BookModel bookModel)
         {
-            bookModel.BookId = books.Count + 1;
-            bookModel.IsAvaliable = true;
-            books.Add(bookModel);
+            _bookRepository.Add(bookModel);
+
+            //bookModel.BookId = books.Count + 1;
+            //bookModel.IsAvaliable = true;
+            //books.Add(bookModel);
+
             return RedirectToAction(nameof(Index));            
         }
 
         // GET: Book/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(books.FirstOrDefault(x=> x.BookId == id));
+            return View(_bookRepository.Get(id));
         }
 
         // POST: Book/Edit/5
@@ -55,21 +61,24 @@ namespace LibraryManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, BookModel bookModel)
         {
-            BookModel book = books.FirstOrDefault(x => x.BookId == id);
-            book.IsAvaliable = bookModel.IsAvaliable;
-            book.Isbn = bookModel.Isbn;
-            book.NumberOfPages = bookModel.NumberOfPages;
-            book.Publisher = bookModel.Publisher;
-            book.Title = bookModel.Title;
-            book.YearOfPublishment = bookModel.YearOfPublishment;
-            book.Author = bookModel.Author;
+            _bookRepository.Update(id, bookModel);
+
+            //BookModel book = books.FirstOrDefault(x => x.BookId == id);
+            //book.IsAvaliable = bookModel.IsAvaliable;
+            //book.Isbn = bookModel.Isbn;
+            //book.NumberOfPages = bookModel.NumberOfPages;
+            //book.Publisher = bookModel.Publisher;
+            //book.Title = bookModel.Title;
+            //book.YearOfPublishment = bookModel.YearOfPublishment;
+            //book.Author = bookModel.Author;
+
             return RedirectToAction(nameof(Index));           
         }
 
         // GET: Book/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(books.FirstOrDefault(x=> x.BookId == id));
+            return View(_bookRepository.Get(id));
         }
 
         // POST: Book/Delete/5
@@ -77,16 +86,24 @@ namespace LibraryManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, BookModel bookModel)
         {
-            BookModel book = books.FirstOrDefault(x => x.BookId == id);
-            books.Remove(book);
+            _bookRepository.Delete(id);
+
+            //BookModel book = books.FirstOrDefault(x => x.BookId == id);
+            //books.Remove(book);
+
             return RedirectToAction(nameof(Index));            
         }
 
         //GET: Book/IsAvaliable
         public ActionResult Avaliable(int id)
         {
-            BookModel book = books.FirstOrDefault(x => x.BookId == id);
-            book.IsAvaliable = false;
+            BookModel book = _bookRepository.Get(id);
+            book.IsAvaliable = true;
+            _bookRepository.Update(id, book);
+            
+            //BookModel book = books.FirstOrDefault(x => x.BookId == id);
+            //book.IsAvaliable = false;
+
             return RedirectToAction(nameof(Index));
         }
     }
